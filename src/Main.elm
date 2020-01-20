@@ -23,7 +23,7 @@ type alias Model =
 type Page
     = MainPage
     | GamePage GameInfo
-    | EnteringHiscorePage Hiscore
+    | HiscoreEntryPage Hiscore
 
 
 type alias GameInfo =
@@ -62,21 +62,21 @@ init =
 
 
 type Msg
-    = GameStarted
+    = StartGameButtonClicked
     | StartTimeGenerated Int
     | FirstQuestionGenerated Int Question
     | QuestionGenerated Question
     | EndTimeGenerated Int
-    | SetAnswerString String
-    | SubmitAnswer
-    | SetName String
-    | SubmitName
+    | AnswerInputChanged String
+    | SubmitAnswerButtonClicked
+    | HiscoreNameInputChanged String
+    | HiscoreSubmitNameButtonClicked
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GameStarted ->
+        StartGameButtonClicked ->
             ( model, Task.perform (Time.posixToMillis >> StartTimeGenerated) Time.now )
 
         StartTimeGenerated startTime ->
@@ -105,7 +105,7 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        SetAnswerString answerString ->
+        AnswerInputChanged answerString ->
             case model.page of
                 GamePage gameInfo ->
                     ( { model | page = GamePage { gameInfo | answerString = answerString } }, Cmd.none )
@@ -113,7 +113,7 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        SubmitAnswer ->
+        SubmitAnswerButtonClicked ->
             case model.page of
                 GamePage gameInfo ->
                     case String.toInt gameInfo.answerString of
@@ -148,7 +148,7 @@ update msg model =
                 GamePage gameInfo ->
                     ( { model
                         | page =
-                            EnteringHiscorePage
+                            HiscoreEntryPage
                                 { name = model.name, totalTimeSeconds = endTime // 1000 - gameInfo.gameStartUnixTime }
                       }
                     , Cmd.none
@@ -157,17 +157,17 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        SetName name ->
+        HiscoreNameInputChanged name ->
             case model.page of
-                EnteringHiscorePage hiscore ->
-                    ( { model | page = EnteringHiscorePage { hiscore | name = name } }, Cmd.none )
+                HiscoreEntryPage hiscore ->
+                    ( { model | page = HiscoreEntryPage { hiscore | name = name }, name = name }, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
 
-        SubmitName ->
+        HiscoreSubmitNameButtonClicked ->
             case model.page of
-                EnteringHiscorePage hiscore ->
+                HiscoreEntryPage hiscore ->
                     ( { model
                         | page = MainPage
                         , hiscores = List.sortBy .totalTimeSeconds (hiscore :: model.hiscores)
@@ -213,7 +213,7 @@ view model =
 
                   else
                     ol [] (List.map viewHiscore model.hiscores)
-                , button [ onClick GameStarted ] [ text "Start Game!" ]
+                , button [ onClick StartGameButtonClicked ] [ text "Start Game!" ]
                 ]
 
         GamePage gameInfo ->
@@ -227,16 +227,16 @@ view model =
                             ++ " "
                             ++ String.fromInt gameInfo.question.second
                             ++ " = "
-                    , input [ onInput SetAnswerString, value gameInfo.answerString ] []
+                    , input [ onInput AnswerInputChanged, value gameInfo.answerString ] []
                     ]
-                , button [ onClick SubmitAnswer ] [ text "Submit answer" ]
+                , button [ onClick SubmitAnswerButtonClicked ] [ text "Submit answer" ]
                 ]
 
-        EnteringHiscorePage hiscore ->
+        HiscoreEntryPage hiscore ->
             div []
                 [ h2 [] [ text "New hiscore!" ]
-                , input [ value hiscore.name, onInput SetName ] []
-                , button [ onClick SubmitName ] [ text "Add name to hiscores!" ]
+                , input [ value hiscore.name, onInput HiscoreNameInputChanged ] []
+                , button [ onClick HiscoreSubmitNameButtonClicked ] [ text "Add name to hiscores!" ]
                 ]
 
 
