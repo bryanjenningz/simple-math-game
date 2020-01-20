@@ -80,7 +80,7 @@ update msg model =
             ( model, Task.perform (Time.posixToMillis >> StartTimeGenerated) Time.now )
 
         StartTimeGenerated startTime ->
-            ( model, generateFirstQuestion (startTime // 1000) )
+            ( model, generateQuestion (FirstQuestionGenerated (startTime // 1000)) )
 
         FirstQuestionGenerated startTime question ->
             ( { model
@@ -131,7 +131,7 @@ update msg model =
                                                     , answerString = ""
                                                 }
                                       }
-                                    , generateQuestion
+                                    , generateQuestion QuestionGenerated
                                     )
 
                             else
@@ -189,18 +189,9 @@ operatorFunction operator =
             (-)
 
 
-generateFirstQuestion : Int -> Cmd Msg
-generateFirstQuestion startTime =
-    Random.generate (FirstQuestionGenerated startTime) <|
-        Random.map3 Question
-            (Random.int 100 999)
-            (Random.int 100 999)
-            (Random.uniform Add [ Subtract ])
-
-
-generateQuestion : Cmd Msg
-generateQuestion =
-    Random.generate QuestionGenerated <|
+generateQuestion : (Question -> Msg) -> Cmd Msg
+generateQuestion toMsg =
+    Random.generate toMsg <|
         Random.map3 Question
             (Random.int 100 999)
             (Random.int 100 999)
