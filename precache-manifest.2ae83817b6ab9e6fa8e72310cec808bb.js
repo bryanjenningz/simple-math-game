@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/simple-math-game/favicon.ico"
   },
   {
-    "revision": "e1280b3d208af5ddc9c5a6ea2dc746fc",
+    "revision": "7ed4fb811e31e0d6d889b587d2e778be",
     "url": "/simple-math-game/index.html"
   },
   {
@@ -16,12 +16,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/simple-math-game/manifest.json"
   },
   {
-    "revision": "502bfa9bc9e775d84a35",
+    "revision": "6309cde5133e20422435",
     "url": "/simple-math-game/static/css/main.7f457dfb.chunk.css"
   },
   {
-    "revision": "502bfa9bc9e775d84a35",
-    "url": "/simple-math-game/static/js/main.502bfa9b.chunk.js"
+    "revision": "6309cde5133e20422435",
+    "url": "/simple-math-game/static/js/main.6309cde5.chunk.js"
   },
   {
     "revision": "648a868c3fe20f7462a6",
