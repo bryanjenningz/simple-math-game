@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/simple-math-game/precache-manifest.2ae83817b6ab9e6fa8e72310cec808bb.js"
+  "/simple-math-game/precache-manifest.07b8989144a7caeb9c605f52eed2fcd5.js"
 );
 
 workbox.core.skipWaiting();

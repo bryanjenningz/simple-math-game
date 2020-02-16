@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/simple-math-game/favicon.ico"
   },
   {
-    "revision": "7ed4fb811e31e0d6d889b587d2e778be",
+    "revision": "51f1ac7fd686122c676ee05957d38996",
     "url": "/simple-math-game/index.html"
   },
   {
@@ -16,19 +16,19 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/simple-math-game/manifest.json"
   },
   {
-    "revision": "6309cde5133e20422435",
-    "url": "/simple-math-game/static/css/main.7f457dfb.chunk.css"
+    "revision": "7d9e116cf47c5a2f6c31",
+    "url": "/simple-math-game/static/css/main.33944a47.chunk.css"
   },
   {
-    "revision": "6309cde5133e20422435",
-    "url": "/simple-math-game/static/js/main.6309cde5.chunk.js"
+    "revision": "7d9e116cf47c5a2f6c31",
+    "url": "/simple-math-game/static/js/main.7d9e116c.chunk.js"
   },
   {
     "revision": "648a868c3fe20f7462a6",
     "url": "/simple-math-game/static/js/runtime~main.648a868c.js"
   },
   {
-    "revision": "3ca81432027bbb7b376c",
-    "url": "/simple-math-game/static/js/vendors~main.3ca81432.chunk.js"
+    "revision": "604c6712e7dcf2851e2c",
+    "url": "/simple-math-game/static/js/vendors~main.604c6712.chunk.js"
   }
 ]);

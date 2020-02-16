@@ -1,15 +1,15 @@
 {
-  "main.css": "/simple-math-game/static/css/main.7f457dfb.chunk.css",
-  "main.js": "/simple-math-game/static/js/main.6309cde5.chunk.js",
-  "main.js.map": "/simple-math-game/static/js/main.6309cde5.chunk.js.map",
+  "main.css": "/simple-math-game/static/css/main.33944a47.chunk.css",
+  "main.js": "/simple-math-game/static/js/main.7d9e116c.chunk.js",
+  "main.js.map": "/simple-math-game/static/js/main.7d9e116c.chunk.js.map",
   "runtime~main.js": "/simple-math-game/static/js/runtime~main.648a868c.js",
   "runtime~main.js.map": "/simple-math-game/static/js/runtime~main.648a868c.js.map",
-  "vendors~main.js": "/simple-math-game/static/js/vendors~main.3ca81432.chunk.js",
-  "vendors~main.js.map": "/simple-math-game/static/js/vendors~main.3ca81432.chunk.js.map",
+  "vendors~main.js": "/simple-math-game/static/js/vendors~main.604c6712.chunk.js",
+  "vendors~main.js.map": "/simple-math-game/static/js/vendors~main.604c6712.chunk.js.map",
   "./service-worker.js": "/simple-math-game/./service-worker.js",
   "favicon.ico": "/simple-math-game/favicon.ico",
   "index.html": "/simple-math-game/index.html",
   "logo.svg": "/simple-math-game/logo.svg",
   "manifest.json": "/simple-math-game/manifest.json",
-  "precache-manifest.2ae83817b6ab9e6fa8e72310cec808bb.js": "/simple-math-game/precache-manifest.2ae83817b6ab9e6fa8e72310cec808bb.js"
+  "precache-manifest.07b8989144a7caeb9c605f52eed2fcd5.js": "/simple-math-game/precache-manifest.07b8989144a7caeb9c605f52eed2fcd5.js"
 }
