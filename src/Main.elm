@@ -1,8 +1,8 @@
 module Main exposing (main)
 
 import Browser
-import Html exposing (Html, button, div, h1, h2, input, li, ol, progress, text)
-import Html.Attributes exposing (attribute, value)
+import Html exposing (Html, button, div, h1, h2, input, label, li, ol, progress, text)
+import Html.Attributes exposing (attribute, value, class)
 import Html.Events exposing (onClick, onInput)
 import Random
 import Task
@@ -193,8 +193,8 @@ generateQuestion : (Question -> Msg) -> Cmd Msg
 generateQuestion toMsg =
     Random.generate toMsg <|
         Random.map3 Question
-            (Random.int 100 999)
-            (Random.int 100 999)
+            (Random.int 1 20)
+            (Random.int 1 20)
             (Random.uniform Add [ Subtract ])
 
 
@@ -213,7 +213,7 @@ view model =
 
                   else
                     ol [] (List.map viewHiscore model.hiscores)
-                , button [ onClick StartGameButtonClicked ] [ text "Start Game!" ]
+                , button [ class "btn", onClick StartGameButtonClicked ] [ text "Start Game!" ]
                 ]
 
         GamePage gameInfo ->
@@ -229,14 +229,14 @@ view model =
                             ++ " = "
                     , input [ onInput AnswerInputChanged, value gameInfo.answerString ] []
                     ]
-                , button [ onClick SubmitAnswerButtonClicked ] [ text "Submit answer" ]
+                , button [ class "btn", onClick SubmitAnswerButtonClicked ] [ text "Submit answer" ]
                 ]
 
         HiscoreEntryPage hiscore ->
             div []
                 [ h2 [] [ text "New hiscore!" ]
-                , input [ value hiscore.name, onInput HiscoreNameInputChanged ] []
-                , button [ onClick HiscoreSubmitNameButtonClicked ] [ text "Add name to hiscores!" ]
+                , label [] [ text "Enter your name", input [ class "input", value hiscore.name, onInput HiscoreNameInputChanged ] [] ]
+                , button [ class "btn", onClick HiscoreSubmitNameButtonClicked ] [ text "Done!" ]
                 ]
 
 
