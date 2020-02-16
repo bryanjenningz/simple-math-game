@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (Html, button, div, h1, h2, input, label, li, ol, progress, text)
-import Html.Attributes exposing (attribute, value, class)
+import Html.Attributes exposing (attribute, class, value)
 import Html.Events exposing (onClick, onInput)
 import Random
 import Task
@@ -17,6 +17,7 @@ type alias Model =
     { page : Page
     , name : String
     , hiscores : List Hiscore
+    , currentTime : Int
     }
 
 
@@ -54,7 +55,7 @@ type alias Hiscore =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { page = MainPage, name = "", hiscores = [] }, Cmd.none )
+    ( { page = MainPage, name = "", currentTime = 0, hiscores = [] }, Cmd.none )
 
 
 
@@ -71,6 +72,7 @@ type Msg
     | SubmitAnswerButtonClicked
     | HiscoreNameInputChanged String
     | HiscoreSubmitNameButtonClicked
+    | GotCurrentTime Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -178,6 +180,9 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        GotCurrentTime currentTime ->
+            ( { model | currentTime = currentTime }, Cmd.none )
+
 
 operatorFunction : Operator -> Int -> Int -> Int
 operatorFunction operator =
@@ -230,11 +235,13 @@ view model =
                     , input [ onInput AnswerInputChanged, value gameInfo.answerString ] []
                     ]
                 , button [ class "btn", onClick SubmitAnswerButtonClicked ] [ text "Submit answer" ]
+                , viewGameTime (model.currentTime - gameInfo.gameStartUnixTime)
                 ]
 
         HiscoreEntryPage hiscore ->
             div []
                 [ h2 [] [ text "New hiscore!" ]
+                , div [] [ text ("You finished in " ++ String.fromInt hiscore.totalTimeSeconds ++ " seconds!") ]
                 , label [] [ text "Enter your name", input [ class "input", value hiscore.name, onInput HiscoreNameInputChanged ] [] ]
                 , button [ class "btn", onClick HiscoreSubmitNameButtonClicked ] [ text "Done!" ]
                 ]
@@ -243,6 +250,11 @@ view model =
 viewProgress : Int -> Html msg
 viewProgress questionsCompleted =
     progress [ attribute "max" "100", value (String.fromFloat <| toFloat questionsCompleted / 5 * 100) ] []
+
+
+viewGameTime : Int -> Html msg
+viewGameTime time =
+    div [ class "game-time" ] [ text <| String.fromInt time ++ " seconds" ]
 
 
 viewHiscore : Hiscore -> Html msg
@@ -268,6 +280,15 @@ operatorToString operator =
 
 
 
+---- SUBSCRIPTIONS ----
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Time.every 500 (Time.posixToMillis >> (\millis -> millis // 1000) >> GotCurrentTime)
+
+
+
 ---- PROGRAM ----
 
 
@@ -277,5 +298,5 @@ main =
         { view = view
         , init = \_ -> init
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }

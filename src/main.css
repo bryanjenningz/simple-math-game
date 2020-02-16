@@ -50,3 +50,9 @@ img {
   font-size: 20px;
   padding: 20px;
 }
+
+.game-time {
+  font-size: 20px;
+  margin: 20px;
+  font-weight: bold;
+}
