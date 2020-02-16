@@ -1,8 +1,9 @@
 module Main exposing (main)
 
 import Browser
+import Browser.Dom
 import Html exposing (Html, button, div, h1, h2, input, label, li, ol, progress, text)
-import Html.Attributes exposing (attribute, class, value)
+import Html.Attributes exposing (attribute, class, id, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Random
 import Task
@@ -63,7 +64,8 @@ init =
 
 
 type Msg
-    = StartGameButtonClicked
+    = AnswerInputFocused
+    | StartGameButtonClicked
     | StartTimeGenerated Int
     | FirstQuestionGenerated Int Question
     | QuestionGenerated Question
@@ -78,6 +80,9 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        AnswerInputFocused ->
+            ( model, Cmd.none )
+
         StartGameButtonClicked ->
             ( model, Task.perform (Time.posixToMillis >> StartTimeGenerated) Time.now )
 
@@ -94,7 +99,7 @@ update msg model =
                         , answerString = ""
                         }
               }
-            , Cmd.none
+            , focusOnAnswerInput
             )
 
         QuestionGenerated question ->
@@ -133,17 +138,17 @@ update msg model =
                                                     , answerString = ""
                                                 }
                                       }
-                                    , generateQuestion QuestionGenerated
+                                    , Cmd.batch [ generateQuestion QuestionGenerated, focusOnAnswerInput ]
                                     )
 
                             else
-                                ( model, Cmd.none )
+                                ( model, focusOnAnswerInput )
 
                         Nothing ->
-                            ( model, Cmd.none )
+                            ( model, focusOnAnswerInput )
 
                 _ ->
-                    ( model, Cmd.none )
+                    ( model, focusOnAnswerInput )
 
         EndTimeGenerated endTime ->
             case model.page of
@@ -232,7 +237,14 @@ view model =
                             ++ " "
                             ++ String.fromInt gameInfo.question.second
                             ++ " = "
-                    , input [ onInput AnswerInputChanged, value gameInfo.answerString ] []
+                    , input
+                        [ class "input"
+                        , type_ "number"
+                        , id answerInputId
+                        , onInput AnswerInputChanged
+                        , value gameInfo.answerString
+                        ]
+                        []
                     ]
                 , button [ class "btn", onClick SubmitAnswerButtonClicked ] [ text "Submit answer" ]
                 , viewGameTime (model.currentTime - gameInfo.gameStartUnixTime)
@@ -245,6 +257,16 @@ view model =
                 , label [] [ text "Enter your name", input [ class "input", value hiscore.name, onInput HiscoreNameInputChanged ] [] ]
                 , button [ class "btn", onClick HiscoreSubmitNameButtonClicked ] [ text "Done!" ]
                 ]
+
+
+answerInputId : String
+answerInputId =
+    "answer-input"
+
+
+focusOnAnswerInput : Cmd Msg
+focusOnAnswerInput =
+    Task.attempt (\_ -> AnswerInputFocused) (Browser.Dom.focus answerInputId)
 
 
 viewProgress : Int -> Html msg
